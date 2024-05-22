@@ -1,0 +1,16 @@
+
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for kind in kinds %}
+<div>
+    <a href="{% url 'catalog_filter' kind.id %}">{{ kind.name }}</a> <br>
+    <img src="{{ kind.image.url }}">
+    
+</div>
+{% endfor %}
+
+{% endblock %}

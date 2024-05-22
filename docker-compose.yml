@@ -1,0 +1,36 @@
+# Определение версии Docker Compose и начало описания сервисов
+version: '3'
+
+services:
+  web:
+    # Сборка образа для сервиса django из текущей директории
+    build: .
+    # Задание имени контейнера для сервиса django
+    container_name: jaluzi
+    # Задание команды, которую нужно запустить при запуске контейнера для сервиса django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    # Открытие порта на хостовой машине и перенаправление на порт в контейнере
+    ports:
+      - 8000:8000
+    # Зависимость от другого сервиса
+    depends_on:
+      - db
+
+  db:
+    # Использование готового образа postgres
+    image: postgres
+    # Задание переменных окружения для контейнера с postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+     # Задание имени контейнера для сервиса db
+    container_name: jaluzi_db
+     # Связывание тома с директорией в контейнере для сохранения данных postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
+
+volumes:
+  dbdata: null
